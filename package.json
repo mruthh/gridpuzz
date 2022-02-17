@@ -27,12 +27,19 @@
     },
     "extends": [
       "plugin:vue/vue3-essential",
+      "plugin:vue/vue3-strongly-recommended",
       "eslint:recommended"
     ],
     "parserOptions": {
       "parser": "babel-eslint"
     },
-    "rules": {}
+    "rules": {
+      "semi": ["error", "never"],
+      "indent": [2, 2, {"SwitchCase": 1}],
+  
+      "standard/no-callback-literal": "off"
+  
+    }
   },
   "browserslist": [
     "> 1%",

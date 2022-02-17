@@ -1,13 +1,16 @@
 <template>
   <div class="grid">
-    <template v-for="(square, index) in grid" :key="square.item">
+    <template
+      v-for="(square, index) in grid"
+      :key="square.item"
+    >
       <button 
         class="grid-item"
         :style="square.selected ? 'border: 2px solid red' : null"
         @click="toggleSelected(index)"
       >
-          {{ square.item }}
-        </button>
+        {{ square.item }}
+      </button>
     </template>  
   </div>
 </template>
@@ -41,8 +44,9 @@ export default {
       return groups.length ? buildGrid(groups, grid) : grid
     }
 
+    const groups = ref([group1, group2, group3, group4])
 
-    const grid = ref(buildGrid([group1, group2, group3, group4]))
+    const grid = ref(buildGrid(groups))
 
     const selectedItems = computed(() => {
       return grid.value.filter(item => item.selected)
