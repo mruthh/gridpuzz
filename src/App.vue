@@ -53,6 +53,13 @@
       </div>
     </template>
   </div>
+
+  <div
+    v-if="gameIsComplete"
+    class="score"
+  >
+    You got {{ points }} / 10!!
+  </div>
 </template>
 
 <script>
@@ -176,9 +183,11 @@ export default {
     const handleGuess = (guess) => {
       if (guess.isCorrect) addPoint()
       guessIndex.value ++
-
-      if (guessIndex.value > 3) alert(`${points.value} / 10`)
     }
+
+    const gameIsComplete = computed(() => {
+      return guessIndex.value > 3
+    })
 
     return { 
       gridIsSolved,
@@ -186,9 +195,11 @@ export default {
       toggleSelected, 
       solvedGroups, 
       lives,
+      points,
       addPoint,
       guessIndex,
-      handleGuess
+      handleGuess,
+      gameIsComplete
     }
   }
 }
@@ -232,6 +243,14 @@ export default {
     text-align: right;
   }
 
+  .score {
+    display: flex;
+    justify-content: center;
+    margin-top: 16px;
+    font-size: xx-large;
+    font-weight: bold;
+    width: 400px;
+  }
   .flex {
     display: flex;
     align-items: center;
