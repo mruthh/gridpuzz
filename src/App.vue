@@ -15,6 +15,7 @@
     >
       <button 
         class="grid-item"
+        :class="`background-${square.groupId}`"
         :style="square.selected ? 'border: 2px solid red' : null"
         @click="toggleSelected(index)"
       >
@@ -149,4 +150,21 @@ export default {
   .solved {
     margin-bottom: 8px;
   }
+
+  .background-1 {
+    background-color: blue;
+  }
+
+  .background-2 {
+    background-color: blueviolet;
+  }
+
+  .background-3 {
+    background-color: aqua;
+  }
+
+  .background-4 {
+    background-color: cornflowerblue;
+  }
+
 </style>
