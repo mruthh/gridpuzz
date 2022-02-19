@@ -4,7 +4,13 @@
       v-for="group in solvedGroups"
       :key="group.id"
     >
-      <SolvedGroup :items="group.items" />
+      <div class="flex">
+        <SolvedGroup :items="group.items" />
+        <ConnectionInput 
+          v-if="gridIsSolved" 
+          :connections="group.connections"
+        />
+      </div>
     </template>
   </div>
 
@@ -46,6 +52,7 @@
 import { ref, computed } from 'vue'
 import { cloneDeep } from 'lodash'
 import SolvedGroup from './components/SolvedGroup.vue'
+import ConnectionInput from './components/ConnectionInput.vue'
 
 const group1 = { id: 1, items: ['Bea', 'Mae', 'Angus', 'Selmers'], connections: { description: 'Night in the woods' } }
 const group2 = { id: 2, items: ['Gregg', 'Robert\'s', 'Road', 'House'], connections: { description: 'Rules' } }
@@ -55,7 +62,7 @@ const group4 = { id: 4, items: ['Ground', 'Calm', 'Settle', 'Center'], connectio
 
 export default {
   name: 'App',
-  components: { SolvedGroup },
+  components: { SolvedGroup, ConnectionInput },
   setup () {
     const randomIndex = length => {
       return Math.round((Math.random() * 10000)) % length
@@ -79,6 +86,8 @@ export default {
     }
 
     const solvedGroups = ref([])
+    const gridIsSolved = computed(() => solvedGroups.value.length === 4)
+    
     const groups = ref([group1, group2, group3, group4])
     const grid = ref(buildGrid(groups.value))
 
@@ -159,7 +168,13 @@ export default {
       if (selectedItems.value.length >= 4) handleGroupSelected(selectedItems.value)
     }
 
-    return { gridRows, toggleSelected, solvedGroups, lives }
+    return { 
+      gridIsSolved,
+      gridRows, 
+      toggleSelected, 
+      solvedGroups, 
+      lives
+    }
   }
 }
 </script>
@@ -184,6 +199,11 @@ export default {
 
   .solved {
     margin-bottom: 8px;
+  }
+
+  .flex {
+    display: flex;
+    align-items: center;
   }
 
   .background-1 {
