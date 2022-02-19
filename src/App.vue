@@ -137,11 +137,15 @@ export default {
         alert('Sorry, not a group')
         if (groups.value.length === 2) {
           lives.value --
-          if (!lives.value) alert ('sorry, no more lives')
+          if (!lives.value) {
+            alert ('sorry, no more lives')
 
-          solvedGroups.value.push(groups.value[0])
-          solvedGroups.value.push(groups.value[1])
-          groups.value = []
+            solvedGroups.value.push(groups.value[0])
+            solvedGroups.value.push(groups.value[1])
+            groups.value = []
+
+            grid.value = buildGrid(groups.value)
+          }
         }
       }
 
