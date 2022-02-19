@@ -27,7 +27,7 @@
         >
           <button 
             class="grid-item"
-            :class="`background-${square.groupId}`"
+            :class="`theme-${square.groupId}`"
             :style="square.selected ? 'border: 2px solid red' : null"
             @click="toggleSelected(rowIndex, index)"
           >
@@ -215,20 +215,24 @@ export default {
     align-items: center;
   }
 
-  .background-1 {
+  .theme-1 {
     background-color: blue;
+    color: white;
   }
 
-  .background-2 {
+  .theme-2 {
     background-color: blueviolet;
+    color: white;
   }
 
-  .background-3 {
+  .theme-3 {
     background-color: aqua;
+    color: black;
   }
 
-  .background-4 {
-    background-color: cornflowerblue;
+  .theme-4 {
+    background-color: lightskyblue;
+    color: black;
   }
 
 </style>
