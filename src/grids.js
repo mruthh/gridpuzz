@@ -30,7 +30,40 @@ const group4 = {
   } 
 }
 
+const group5 = { 
+  id: 1, 
+  items: ['Clamp', 'Paddle', 'Gag', 'Whip'], 
+  connections: { 
+    description: 'BDSM implements',
+    keywords: ['kink', 'bdsm', 'implements', 'toys']
+  } }
+const group6 = { 
+  id: 2, 
+  items: ['Cane', 'Daddy', 'Cookie', 'Glider'], 
+  connections: {
+    description: 'Sugar _____',
+    keywords: ['sugar']
+  } 
+}
+const group7 = { 
+  id: 3, 
+  items: ['Chain', 'Cuff', 'Missing', 'Hyper'], 
+  connections: { 
+    description: '_____ link',
+    keywords: ['link']
+  } 
+}
+const group8 = { 
+  id: 4, 
+  items: ['Plug', 'Stem', 'Stop', 'Stanch'], 
+  connections: { 
+    description: 'Synonyms for "stop" or "restrict"',
+    keywords: ['synonyms', 'plug', 'stem', 'stop', 'stanch', 'restrict']
+  } 
+}
+
 
 export const grids = [
-  [group1, group2, group3, group4]
+  [group1, group2, group3, group4],
+  [group5, group6, group7, group8]
 ]

@@ -85,7 +85,7 @@ export default {
     const solvedGroups = ref([])
     const gridIsSolved = computed(() => solvedGroups.value.length === 4)
     
-    const groups = ref(grids[0])
+    const groups = ref(grids[1])
     const grid = ref(buildGrid(groups.value))
 
     const gridRows = computed(() => {
