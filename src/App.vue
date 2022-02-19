@@ -22,6 +22,15 @@
       </button>
     </template>  
   </div>
+
+  <div v-if="solvedGroups.length === 2">
+    <template
+      v-for="(life, index) in Array(lives)"
+      :key="index"
+    >
+      X
+    </template>
+  </div>
 </template>
 
 <script>
@@ -61,10 +70,8 @@ export default {
       return groups.length ? buildGrid(groups, grid) : grid
     }
 
-    const groups = ref([group1, group2, group3, group4])
-    
     const solvedGroups = ref([])
-
+    const groups = ref([group1, group2, group3, group4])
     const grid = ref(buildGrid(groups.value))
 
     const selectedItems = computed(() => {
@@ -76,6 +83,8 @@ export default {
         item.selected = false
       }
     }
+
+    const lives = ref(3)
 
     const isValidGroup = items => {
       return items.every(item => item.groupId === items[0].groupId)
@@ -97,7 +106,13 @@ export default {
 
         grid.value = buildGrid(groups.value)
       }
-      else alert('Sorry, not a group')
+      else {
+        alert('Sorry, not a group')
+        if (groups.value.length === 2) {
+          lives.value --
+          if (!lives.value) alert ('sorry, no more lives')
+        }
+      }
 
       resetItems()
     }
@@ -108,12 +123,16 @@ export default {
       if (selectedItems.value.length >= 4) handleGroupSelected(selectedItems.value)
     }
 
-    return { grid, toggleSelected, solvedGroups }
+    return { grid, toggleSelected, solvedGroups, lives }
   }
 }
 </script>
 
 <style>
+  html {
+    box-sizing: border-box;
+  }
+
   .grid {
     display: grid;
     grid-template-columns: 100px 100px 100px 100px;
