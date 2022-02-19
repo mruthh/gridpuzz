@@ -3,7 +3,7 @@
     v-if="!hasMadeGuess"
     @submit.prevent="handleGuess"
   >
-    <label>
+    <label class="spaced">
       <input
         ref="input"
         type="text"
@@ -14,7 +14,7 @@
   </form>
 
   <div v-if="hasMadeGuess">
-    <span>{{ isCorrect ? 'Correct!' : 'Incorrect' }}</span>
+    <span class="spaced">{{ isCorrect ? 'Correct!' : 'Incorrect' }}</span>
     <span>{{ connections.description }}</span>
   </div>
 </template>
@@ -68,5 +68,7 @@ export default {
 </script>
 
 <style>
-
+  .spaced {
+    margin: 0px 24px;
+  }
 </style>
