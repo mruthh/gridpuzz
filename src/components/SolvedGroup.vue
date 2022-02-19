@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-container">
+  <div class="grid-row">
     <template
       v-for="item in items"
       :key="item"
@@ -24,8 +24,10 @@ export default {
 </script>
 
 <style>
-.flex-container {
-  display: flex;
-}
+.grid-row {
+    display: grid;
+    grid-template-columns: 100px 100px 100px 100px;
+    height: 100px;
+  }
 
 </style>

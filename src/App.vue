@@ -1,9 +1,11 @@
 <template>
-  <div
-    v-for="group in solvedGroups"
-    :key="group.id"
-  >
-    <SolvedGroup :items="group.items" />
+  <div class="solved">
+    <template
+      v-for="group in solvedGroups"
+      :key="group.id"
+    >
+      <SolvedGroup :items="group.items" />
+    </template>
   </div>
 
   <div class="grid">
@@ -44,6 +46,8 @@ export default {
 
     const buildGrid = (_groups, grid = []) => {
       const groups = cloneDeep(_groups)
+      if (!groups.length) return grid
+
       const groupIndex = randomIndex(groups.length)
       
       const group = groups[groupIndex]
@@ -79,17 +83,19 @@ export default {
 
     const handleGroupSelected = items => {
       if (isValidGroup(items)) {
-        alert('You found a group!')
         const solvedGroupId = items[0].groupId
 
         const group = groups.value.find(g => g.id === solvedGroupId)
         solvedGroups.value.push(group)
 
-        groups.value = groups.value.filter(g => {
-          return g.id !== solvedGroupId
-        })
+        groups.value = groups.value.filter(g => g.id !== solvedGroupId)
+        
+        if (groups.value.length === 1) {
+          solvedGroups.value.push(groups.value[0])
+          groups.value = []
+        } 
 
-        buildGrid(groups.value)
+        grid.value = buildGrid(groups.value)
       }
       else alert('Sorry, not a group')
 
@@ -119,5 +125,9 @@ export default {
     justify-content: center;
     align-items: center;
     border: 1px solid black;
+  }
+
+  .solved {
+    margin-bottom: 8px;
   }
 </style>
