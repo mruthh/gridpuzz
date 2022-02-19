@@ -1,18 +1,27 @@
 <template>
-  <form @submit.prevent="handleGuess">
+  <form
+    v-if="!hasMadeGuess"
+    @submit.prevent="handleGuess"
+  >
     <label>
       <input
+        ref="input"
         type="text"
         v-model="guess"
       >
       What is the connection?
     </label>
   </form>
+
+  <div v-if="hasMadeGuess">
+    <span>{{ isCorrect ? 'Correct!' : 'Incorrect' }}</span>
+    <span>{{ connections.description }}</span>
+  </div>
 </template>
 
 <script>
 
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 
 export default {
   props: {
@@ -21,14 +30,39 @@ export default {
       required: true
     }
   },
-  setup() {
+  emits: ['guess'],
+  setup(props, { emit }) {
     const guess = ref('')
+    const hasMadeGuess = ref(false)
+    const isCorrect = ref(false)
+
+    const guessIsCorrect = (guess) => {
+      const keywords = props.connections.keywords
+
+      for (const keyword of keywords) {
+        if (guess.toLowerCase().includes(keyword.toLowerCase())) return true
+      }
+
+      return false
+    }
     
     const handleGuess = () => {
-      console.log(guess.value)
+      hasMadeGuess.value = true
+
+      if (guessIsCorrect(guess.value)) {
+        isCorrect.value = true
+      }
+
+      emit('guess', { isCorrect: isCorrect.value})
     }
 
-    return { guess, handleGuess }
+    const input = ref(null)
+    onMounted(() => { 
+      console.log(input.value)
+      input.value.focus() 
+    })
+    
+    return { guess, handleGuess, hasMadeGuess, isCorrect, input }
   }
 }
 </script>

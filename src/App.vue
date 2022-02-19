@@ -1,14 +1,15 @@
 <template>
   <div class="solved">
     <template
-      v-for="group in solvedGroups"
+      v-for="(group, index) in solvedGroups"
       :key="group.id"
     >
       <div class="flex">
         <SolvedGroup :items="group.items" />
         <ConnectionInput 
-          v-if="gridIsSolved" 
+          v-if="gridIsSolved && index <= guessIndex" 
           :connections="group.connections"
+          @guess="handleGuess"
         />
       </div>
     </template>
@@ -54,11 +55,7 @@ import { cloneDeep } from 'lodash'
 import SolvedGroup from './components/SolvedGroup.vue'
 import ConnectionInput from './components/ConnectionInput.vue'
 
-const group1 = { id: 1, items: ['Bea', 'Mae', 'Angus', 'Selmers'], connections: { description: 'Night in the woods' } }
-const group2 = { id: 2, items: ['Gregg', 'Robert\'s', 'Road', 'House'], connections: { description: 'Rules' } }
-const group3 = { id: 3, items: ['Germ', 'Paste', 'Grass', 'Bran'], connections: { description: 'Wheat' } }
-const group4 = { id: 4, items: ['Ground', 'Calm', 'Settle', 'Center'], connections: { description: 'Find peace' } }
-
+import { grids } from './grids.js'
 
 export default {
   name: 'App',
@@ -88,7 +85,7 @@ export default {
     const solvedGroups = ref([])
     const gridIsSolved = computed(() => solvedGroups.value.length === 4)
     
-    const groups = ref([group1, group2, group3, group4])
+    const groups = ref(grids[0])
     const grid = ref(buildGrid(groups.value))
 
     const gridRows = computed(() => {
@@ -168,12 +165,24 @@ export default {
       if (selectedItems.value.length >= 4) handleGroupSelected(selectedItems.value)
     }
 
+    // After grid is solved
+    const guessIndex = ref(0)
+    const handleGuess = (guess) => {
+      if (guess.isCorrect) addPoint()
+      guessIndex.value ++
+
+      if (guessIndex.value > 3) alert(`${points.value} / 10`)
+    }
+
     return { 
       gridIsSolved,
       gridRows, 
       toggleSelected, 
       solvedGroups, 
-      lives
+      lives,
+      addPoint,
+      guessIndex,
+      handleGuess
     }
   }
 }
