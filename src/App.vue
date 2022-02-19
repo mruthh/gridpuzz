@@ -8,20 +8,27 @@
     </template>
   </div>
 
-  <div class="grid">
+  <div>
     <template
-      v-for="(square, index) in grid"
-      :key="square.item"
+      v-for="(row, rowIndex) in gridRows"
+      :key="rowIndex"
     >
-      <button 
-        class="grid-item"
-        :class="`background-${square.groupId}`"
-        :style="square.selected ? 'border: 2px solid red' : null"
-        @click="toggleSelected(index)"
-      >
-        {{ square.item }}
-      </button>
-    </template>  
+      <div class="grid-row">
+        <template
+          v-for="(square, index) in row"
+          :key="square.item"
+        >
+          <button 
+            class="grid-item"
+            :class="`background-${square.groupId}`"
+            :style="square.selected ? 'border: 2px solid red' : null"
+            @click="toggleSelected(rowIndex, index)"
+          >
+            {{ square.item }}
+          </button>
+        </template>
+      </div>
+    </template>
   </div>
 
   <div v-if="solvedGroups.length === 2">
@@ -74,6 +81,15 @@ export default {
     const solvedGroups = ref([])
     const groups = ref([group1, group2, group3, group4])
     const grid = ref(buildGrid(groups.value))
+
+    const gridRows = computed(() => {
+      return [
+        grid.value.slice(0, 4),
+        grid.value.slice(4, 8),
+        grid.value.slice(8, 12),
+        grid.value.slice(12, 16)
+      ].filter(group => group.length)
+    })
 
     const selectedItems = computed(() => {
       return grid.value.filter(item => item.selected)
@@ -132,13 +148,14 @@ export default {
       resetItems()
     }
 
-    const toggleSelected = index => {
-      grid.value[index].selected = !grid.value[index].selected
+    const toggleSelected = (rowIndex, index) => {
+      const item = gridRows.value[rowIndex][index]
+      item.selected = !item.selected
 
       if (selectedItems.value.length >= 4) handleGroupSelected(selectedItems.value)
     }
 
-    return { grid, toggleSelected, solvedGroups, lives }
+    return { gridRows, toggleSelected, solvedGroups, lives }
   }
 }
 </script>
@@ -148,10 +165,10 @@ export default {
     box-sizing: border-box;
   }
 
-  .grid {
+  .grid-row {
     display: grid;
     grid-template-columns: 100px 100px 100px 100px;
-    grid-template-rows: 100px 100px 100px 100px;
+    height: 75px;
   }
 
   .grid-item {

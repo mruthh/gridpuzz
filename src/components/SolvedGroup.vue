@@ -24,10 +24,5 @@ export default {
 </script>
 
 <style>
-.grid-row {
-    display: grid;
-    grid-template-columns: 100px 100px 100px 100px;
-    height: 100px;
-  }
 
 </style>
