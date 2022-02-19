@@ -1,4 +1,11 @@
 <template>
+  <div
+    v-for="group in solvedGroups"
+    :key="group.id"
+  >
+    <SolvedGroup :items="group.items" />
+  </div>
+
   <div class="grid">
     <template
       v-for="(square, index) in grid"
@@ -18,6 +25,8 @@
 <script>
 
 import { ref, computed } from 'vue'
+import { cloneDeep } from 'lodash'
+import SolvedGroup from './components/SolvedGroup.vue'
 
 const group1 = { id: 1, items: ['Bea', 'Mae', 'Angus', 'Selmers'], connections: { description: 'Night in the woods' } }
 const group2 = { id: 2, items: ['Gregg', 'Robert\'s', 'Road', 'House'], connections: { description: 'Rules' } }
@@ -27,15 +36,19 @@ const group4 = { id: 4, items: ['Ground', 'Calm', 'Settle', 'Center'], connectio
 
 export default {
   name: 'App',
+  components: { SolvedGroup },
   setup () {
     const randomIndex = length => {
       return Math.round((Math.random() * 10000)) % length
     }
 
-    const buildGrid = (groups, grid = []) => {
+    const buildGrid = (_groups, grid = []) => {
+      const groups = cloneDeep(_groups)
       const groupIndex = randomIndex(groups.length)
+      
       const group = groups[groupIndex]
-      const itemIndex = randomIndex(group.length)
+
+      const itemIndex = randomIndex(group.items.length)
       const item = group.items.splice(itemIndex, 1)[0]
       
       if (!group.items.length) groups.splice(groupIndex, 1)
@@ -45,8 +58,10 @@ export default {
     }
 
     const groups = ref([group1, group2, group3, group4])
+    
+    const solvedGroups = ref([])
 
-    const grid = ref(buildGrid(groups))
+    const grid = ref(buildGrid(groups.value))
 
     const selectedItems = computed(() => {
       return grid.value.filter(item => item.selected)
@@ -62,9 +77,19 @@ export default {
       return items.every(item => item.groupId === items[0].groupId)
     }
 
-    const validateGroup = items => {
+    const handleGroupSelected = items => {
       if (isValidGroup(items)) {
         alert('You found a group!')
+        const solvedGroupId = items[0].groupId
+
+        const group = groups.value.find(g => g.id === solvedGroupId)
+        solvedGroups.value.push(group)
+
+        groups.value = groups.value.filter(g => {
+          return g.id !== solvedGroupId
+        })
+
+        buildGrid(groups.value)
       }
       else alert('Sorry, not a group')
 
@@ -74,15 +99,15 @@ export default {
     const toggleSelected = index => {
       grid.value[index].selected = !grid.value[index].selected
 
-      if (selectedItems.value.length >= 4) validateGroup(selectedItems.value)
+      if (selectedItems.value.length >= 4) handleGroupSelected(selectedItems.value)
     }
 
-    return { grid, toggleSelected }
+    return { grid, toggleSelected, solvedGroups }
   }
 }
 </script>
 
-<style scoped>
+<style>
   .grid {
     display: grid;
     grid-template-columns: 100px 100px 100px 100px;
