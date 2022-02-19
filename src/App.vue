@@ -5,7 +5,10 @@
       :key="group.id"
     >
       <div class="flex">
-        <SolvedGroup :items="group.items" />
+        <SolvedGroup
+          :items="group.items"
+          :class="`theme-${index + 1}`"
+        />
         <ConnectionInput 
           v-if="gridIsSolved && index <= guessIndex" 
           :connections="group.connections"
@@ -85,7 +88,7 @@ export default {
     const solvedGroups = ref([])
     const gridIsSolved = computed(() => solvedGroups.value.length === 4)
     
-    const groups = ref(grids[1])
+    const groups = ref(grids[0])
     const grid = ref(buildGrid(groups.value))
 
     const gridRows = computed(() => {
@@ -216,23 +219,24 @@ export default {
   }
 
   .theme-1 {
-    background-color: blue;
-    color: white;
-  }
-
-  .theme-2 {
     background-color: blueviolet;
     color: white;
   }
 
-  .theme-3 {
+  .theme-2 {
     background-color: aqua;
     color: black;
   }
 
-  .theme-4 {
+  .theme-3 {
     background-color: lightskyblue;
     color: black;
   }
+
+  .theme-4 {
+    background-color: blue;
+    color: white;
+  }
+  
 
 </style>
