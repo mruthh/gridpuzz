@@ -1,4 +1,5 @@
 <template>
+  <h1>GridPuzz</h1>
   <div class="solved">
     <template
       v-for="(group, index) in solvedGroups"
@@ -18,6 +19,19 @@
     </template>
   </div>
 
+  <div
+    v-if="solvedGroups.length === 2"
+    class="lives"
+  >
+    <template
+      v-for="(life, index) in Array(lives)"
+      :key="index"
+      class="life"
+    >
+      🧩
+    </template>
+  </div>
+
   <div>
     <template
       v-for="(row, rowIndex) in gridRows"
@@ -30,23 +44,13 @@
         >
           <button 
             class="grid-item"
-            :class="`theme-${square.groupId}`"
-            :style="square.selected ? 'border: 2px solid red' : null"
+            :class="{ selected: square.selected }"
             @click="toggleSelected(rowIndex, index)"
           >
             {{ square.item }}
           </button>
         </template>
       </div>
-    </template>
-  </div>
-
-  <div v-if="solvedGroups.length === 2">
-    <template
-      v-for="(life, index) in Array(lives)"
-      :key="index"
-    >
-      X
     </template>
   </div>
 </template>
@@ -143,7 +147,6 @@ export default {
         grid.value = buildGrid(groups.value)
       }
       else {
-        alert('Sorry, not a group')
         if (groups.value.length === 2) {
           lives.value --
           if (!lives.value) {
@@ -196,6 +199,12 @@ export default {
     box-sizing: border-box;
   }
 
+  h1 {
+    width: 400px;
+    display: flex;
+    justify-content: center;
+  }
+
   .grid-row {
     display: grid;
     grid-template-columns: 100px 100px 100px 100px;
@@ -211,6 +220,16 @@ export default {
 
   .solved {
     margin-bottom: 8px;
+  }
+
+  .selected {
+    background-color: lightsteelblue;
+  }
+
+  .lives {
+    margin: 16px 0px 8px;
+    width: 400px;
+    text-align: right;
   }
 
   .flex {
