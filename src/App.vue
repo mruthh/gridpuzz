@@ -86,10 +86,18 @@ export default {
     }
 
     const lives = ref(3)
+    const points = ref(0)
 
     const isValidGroup = items => {
       return items.every(item => item.groupId === items[0].groupId)
     }
+
+    const addPoint = () => {
+      points.value ++
+
+      // if you've found all the groups and all the connections, get 2 bonus pts!
+      if (points.value === 8) points.value = 10
+    } 
 
     const handleGroupSelected = items => {
       if (isValidGroup(items)) {
@@ -99,10 +107,12 @@ export default {
         solvedGroups.value.push(group)
 
         groups.value = groups.value.filter(g => g.id !== solvedGroupId)
+        addPoint()
         
         if (groups.value.length === 1) {
           solvedGroups.value.push(groups.value[0])
           groups.value = []
+          addPoint()
         } 
 
         grid.value = buildGrid(groups.value)
@@ -112,6 +122,10 @@ export default {
         if (groups.value.length === 2) {
           lives.value --
           if (!lives.value) alert ('sorry, no more lives')
+
+          solvedGroups.value.push(groups.value[0])
+          solvedGroups.value.push(groups.value[1])
+          groups.value = []
         }
       }
 
