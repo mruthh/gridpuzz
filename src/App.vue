@@ -99,8 +99,8 @@ export default {
     const solvedGroups = ref([])
     const gridIsSolved = computed(() => solvedGroups.value.length === 4)
     
-    // For a cheesy little mvp trick, let's just grab the grid index from the route!
-    const index = window.location.pathname.replace('/', '')
+    // For a cheesy little mvp trick, let's just grab the grid index from the route hash!
+    const index = window.location.hash.replace('#', '')
     const groups = ref(grids[index] || grids[0])
     
     const grid = ref(buildGrid(groups.value))
