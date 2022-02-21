@@ -1,5 +1,10 @@
 # gridpuzz
 
+A minimal clone of the puzzle game from [puzzgrid.com](https://puzzgrid.com/).
+
+Personal project, mostly written in a day.
+
+See it on the web at https://gridpuzz.herokuapp.com/
 ## Project setup
 ```
 npm install
@@ -18,6 +23,11 @@ npm run build
 ### Lints and fixes files
 ```
 npm run lint
+```
+
+### Starts static web server
+```
+npm run start
 ```
 
 ### Customize configuration
