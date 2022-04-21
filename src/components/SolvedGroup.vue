@@ -4,16 +4,21 @@
       v-for="item in items"
       :key="item"
     >
-      <div class="grid-item">
-        {{ item }}
-      </div>
+      <GridItem
+        :item="item"
+        :class="$attrs.class"
+      />
     </template>  
   </div>
 </template>
 
 <script>
+
+import GridItem from './GridItem.vue'
+
 export default {
   name: 'SolvedGroup',
+  components: { GridItem },
   props: {
     items: {
       type: Array,
@@ -22,7 +27,3 @@ export default {
   }
 }
 </script>
-
-<style>
-
-</style>
