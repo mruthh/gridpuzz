@@ -43,6 +43,7 @@
           :key="square.item"
         >
           <GridItem
+            v-model:memo="memos[square.item]"
             class="grid-item"
             :class="{ selected: square.selected }"
             :item="square.item"
@@ -63,7 +64,7 @@
 
 <script>
 
-import { ref, computed } from 'vue'
+import { ref, computed, provide } from 'vue'
 import { cloneDeep } from 'lodash'
 import SolvedGroup from './components/SolvedGroup.vue'
 import ConnectionInput from './components/ConnectionInput.vue'
@@ -192,6 +193,9 @@ export default {
       return guessIndex.value > 3
     })
 
+    const memos = ref({})
+    provide('memos', memos)
+
     return { 
       gridIsSolved,
       gridRows, 
@@ -202,7 +206,8 @@ export default {
       addPoint,
       guessIndex,
       handleGuess,
-      gameIsComplete
+      gameIsComplete,
+      memos
     }
   }
 }

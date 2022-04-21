@@ -1,5 +1,5 @@
 <template>
-  <button>
+  <button @click="$emit('click')">
     <div 
       v-if="item.endsWith('.mp3')"
       class="audio-container"
@@ -8,8 +8,13 @@
         :src="audioUrl"
         controls
         @playing="stopOtherPlayers"
+        @click.stop=""
       />
-      <input>
+      <input 
+        :value="memo"
+        @input="$emit('update:memo', $event.target.value)"
+        @click.stop=""
+      >
     </div>
             
     <template v-else>
@@ -27,8 +32,13 @@ export default {
     item: {
       type: String,
       required: true
+    },
+    memo: {
+      type: String,
+      default: ''
     }
   },
+  emits: ['update:memo', 'click'],
   setup (props) {
     const audioUrl = computed(() => {
       return '/assets/' + props.item

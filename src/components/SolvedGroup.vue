@@ -5,6 +5,7 @@
       :key="item"
     >
       <GridItem
+        v-model:memo="memos[item]"
         :item="item"
         :class="$attrs.class"
       />
@@ -15,6 +16,7 @@
 <script>
 
 import GridItem from './GridItem.vue'
+import { ref, inject } from 'vue'
 
 export default {
   name: 'SolvedGroup',
@@ -24,6 +26,11 @@ export default {
       type: Array,
       default: () => []
     }
+  },
+  setup () {
+    const memos = inject('memos', ref({}))
+
+    return { memos }
   }
 }
 </script>
