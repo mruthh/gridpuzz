@@ -42,13 +42,13 @@
           v-for="(square, index) in row"
           :key="square.item"
         >
-          <button 
+          <GridItem
+            v-model:memo="memos[square.item]"
             class="grid-item"
             :class="{ selected: square.selected }"
+            :item="square.item"
             @click="toggleSelected(rowIndex, index)"
-          >
-            {{ square.item }}
-          </button>
+          />
         </template>
       </div>
     </template>
@@ -64,16 +64,17 @@
 
 <script>
 
-import { ref, computed } from 'vue'
+import { ref, computed, provide } from 'vue'
 import { cloneDeep } from 'lodash'
 import SolvedGroup from './components/SolvedGroup.vue'
 import ConnectionInput from './components/ConnectionInput.vue'
+import GridItem from './components/GridItem.vue'
 
 import { grids } from './grids.js'
 
 export default {
   name: 'App',
-  components: { SolvedGroup, ConnectionInput },
+  components: { SolvedGroup, ConnectionInput, GridItem },
   setup () {
     const randomIndex = length => {
       return Math.round((Math.random() * 10000)) % length
@@ -192,6 +193,9 @@ export default {
       return guessIndex.value > 3
     })
 
+    const memos = ref({})
+    provide('memos', memos)
+
     return { 
       gridIsSolved,
       gridRows, 
@@ -202,7 +206,8 @@ export default {
       addPoint,
       guessIndex,
       handleGuess,
-      gameIsComplete
+      gameIsComplete,
+      memos
     }
   }
 }
@@ -214,15 +219,15 @@ export default {
   }
 
   h1 {
-    width: 400px;
+    width: 800px;
     display: flex;
     justify-content: center;
   }
 
   .grid-row {
     display: grid;
-    grid-template-columns: 100px 100px 100px 100px;
-    height: 75px;
+    grid-template-columns: 200px 200px 200px 200px;
+    height: 150px;
   }
 
   .grid-item {

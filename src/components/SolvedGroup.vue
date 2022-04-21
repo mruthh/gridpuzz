@@ -4,25 +4,33 @@
       v-for="item in items"
       :key="item"
     >
-      <div class="grid-item">
-        {{ item }}
-      </div>
+      <GridItem
+        v-model:memo="memos[item]"
+        :item="item"
+        :class="$attrs.class"
+      />
     </template>  
   </div>
 </template>
 
 <script>
+
+import GridItem from './GridItem.vue'
+import { ref, inject } from 'vue'
+
 export default {
   name: 'SolvedGroup',
+  components: { GridItem },
   props: {
     items: {
       type: Array,
       default: () => []
     }
+  },
+  setup () {
+    const memos = inject('memos', ref({}))
+
+    return { memos }
   }
 }
 </script>
-
-<style>
-
-</style>
