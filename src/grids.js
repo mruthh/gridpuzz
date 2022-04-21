@@ -1,3 +1,5 @@
+const { audio1 } = require('./grids/audio1')
+
 const group1 = { 
   id: 1, 
   items: ['Bea', 'Mae', 'Angus', 'Selmers'], 
@@ -97,5 +99,6 @@ const group12 = {
 export const grids = [
   [group1, group2, group3, group4],
   [group5, group6, group7, group8],
-  [group9, group10, group11, group12]
+  [group9, group10, group11, group12],
+  audio1
 ]
